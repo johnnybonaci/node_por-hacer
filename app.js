@@ -1,32 +1,45 @@
-
+// const argv = require('yargs').argv;
 const argv = require('./config/yargs').argv;
-const colors = require('colors/safe');
+const colors = require('colors');
 
-//const { crearArchivo, listarTabla } = require('./multiplicar/multiplicar');
+const porHacer = require('./por-hacer/por-hacer');
+
 
 let comando = argv._[0];
-
 
 switch (comando) {
 
     case 'crear':
-            console.log("crear por hacer")
+        let tarea = porHacer.crear(argv.descripcion);
+        console.log(tarea);
         break;
 
     case 'listar':
-        //listarTabla(argv.base, argv.limite);
-        console.log("mostrar tareas por hacer")
+
+        let listado = porHacer.getListado();
+
+        for (let tarea of listado) {
+            console.log('========Por Hacer========='.green);
+            console.log(tarea.descripcion);
+            console.log('Estado: ', tarea.completado);
+            console.log('=========================='.green);
+        }
+
+
         break;
-        /*crearArchivo(argv.base, argv.limite)
-            .then(archivo => console.log(`Archivo creado: `, colors.green(archivo)))
-            .catch(e => console.log(e));
-        break;*/
 
     case 'actualizar':
-            console.log("actualiza una tarea por hacer")
+
+        let actualizado = porHacer.actualizar(argv.descripcion, argv.completado);
+        console.log(actualizado);
+        break;
+
+    case 'borrar':
+        let borrado = porHacer.borrar(argv.descripcion);
+        console.log(borrado);
         break;
 
     default:
-        console.log('Comando no reconocido');
+        console.log('Comando no es reconocido.');
 
 }
